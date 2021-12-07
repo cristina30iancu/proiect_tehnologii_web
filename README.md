@@ -1,4 +1,4 @@
-Aplicatie web pentru acordarea de feedback continuu
+<h1>Aplicatie web pentru acordarea de feedback continuu</h1>
 Aspecte arhitecturale
 Acest proiect are ca obiectiv realizarea unei aplicații web pentru acordarea de feedback continuu unei activitati (un curs sau seminar). Arhitectura va fi de tip Single Page Application accesibilă în browser de pe desktop, dispozitive mobile sau tablete (in functie de preferințele utilizatorului).
 Front-end-ul SPA va fi realizat cu ajutorul unui framework bazat pe componente, in React.js. Back-end-ul va avea o interfață REST și va fi realizat în node.js Stocarea se va face peste o bază relațională (SQLite) și accesul la baza se va face prin intermediul unui ORM (unui API de persistenţă și date expuse de un serviciu extern).
