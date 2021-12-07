@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+    <body>
+       <audio id="audio" loop autoplay controls src="CanoninD.mp3">
+         Your browser doesn't support HTML5 audio.
+       </audio>
+
+       <button id="btnStart">Play from start</button>
+
+       <script>
+           "use strict";
+            const audio = document.getElementById("audio");
+            const btnStart = document.getElementById("btnStart");
+
+            btnStart.addEventListener("click", ()=>{
+                audio.currentTime = 0;
+            });
+        </script>
+    </body>
+</html>
