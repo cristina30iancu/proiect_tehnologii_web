@@ -20,6 +20,6 @@ Alte aplicatii din domenii distincte sunt: Discord, ce implementeaza chiar ideea
 Descrierea detaliata a functionalitatilor
 Profesorul creeaza o noua activitate, adaugandu-i nume, data si ora si generandu-i-se un cod unic de acces ce va fi stocat in baza de date. Dupa ce studentii se autentifica si participa la activitatea respectiva, vor avea posibilitatea de a oferi feedback, vizualizat in timp real de catre profesor. La finalul activitatii, se va afisa un ecran cu un rezumat detaliat al opiniilor. Acesta consta in categorisirea si numararea feedback-ului: cati studenti au participat, cati au oferit un anumit emoticon si ce mesaj au lasat ca justificare, salvandu-se ca un istoric . In calitate de student logat in activitate cu un cod de acces, va fi vizibil ecranul de acordare de feedback continuu anonim in timo real, ce contine emoticoanele cu optiune de click si sectiune de inserare a motivului ( tip selectie sau text liber).
 
-Componentele si grafica ecranelor
+Componentele si grafica ecranelor:
 TODO 
 
