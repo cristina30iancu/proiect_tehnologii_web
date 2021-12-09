@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const sequelize = require('../sequelize');
+const sequelize = require('../database/sequelize');
 
 // Import created models
 const User = require('../models/User');
@@ -16,10 +16,7 @@ User.belongsToMany(Activity, {through: 'enrollements'});
 Activity.belongsToMany(Feedback,{ through: 'links'});
 Feedback.belongsToMany(Activity,{ through: 'links'});
 
-/**
- * Create a special GET endpoint so that when it is called it will
- * sync our database with the models.
- */
+// Create a special GET endpoint so that when it is called it will sync our database with the models.
  app.get('/create', async (req, res, next) => {
     try {
       await sequelize.sync({ force: true });
@@ -30,4 +27,13 @@ Feedback.belongsToMany(Activity,{ through: 'links'});
     }
   });
   
+app.get('/update', async (req, res, next) => {
+    try {
+      await sequelize.sync({ alter: true });
+      res.status(201).json({ message: 'Database updated with the models.' });
+    } catch (err) {
+      console.log(err);
+      next(err);
+    }
+  });
 module.exports = app;  

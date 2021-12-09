@@ -1,4 +1,4 @@
-const sequelize = require('../sequelize');
+const sequelize = require('../database/sequelize');
 const  DataTypes  = require('sequelize');
 
 const Feedback = sequelize.define('feedback',{
@@ -14,7 +14,7 @@ const Feedback = sequelize.define('feedback',{
     },
     type : {
         type : DataTypes.STRING,
-        isIn : ['EXCELENT', 'BUN', 'OK', 'SATISFACATOR', 'NESATISFACATOR'],
+        isIn : ['EXCELENT', 'GOOD', 'AVERAGE', 'POOR'],
         allowNull: false,
         notEmpty: true
     },

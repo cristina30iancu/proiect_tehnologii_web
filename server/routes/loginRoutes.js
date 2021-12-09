@@ -1,18 +1,17 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const app = express();
-
-const { encodeToken, authenticationMiddleware } = require('../authServer');
+const { encodeToken, authenticationMiddleware } = require('./authServer');
 
 // Import created models
 const User = require('../models/User');
-// const UserType = require('../models/UserType');
+const UserType = require('../models/UserType');
 
 // Define entities relationship
-// UserType.hasMany(User);
+UserType.hasMany(User);
 
 //primeste datele de autentificare si intoarce un token de acces
-app.post('/', async (req, res, next) => {
+app.post('/login', async (req, res, next) => {
   const params = req.body.userName;
   const pass = req.body.password;
   if (params && pass) {
@@ -37,7 +36,7 @@ app.post('/', async (req, res, next) => {
 });
 
 //intoarce datele utilizatorului autentificat
-app.get('/retrieve', authenticationMiddleware, async (req, res) => {
+app.get('/logged', authenticationMiddleware, async (req, res) => {
   if (req.body.userName) {
     const name = req.body.userName;
     const user = await User.findOne({ where: { userName: name } });

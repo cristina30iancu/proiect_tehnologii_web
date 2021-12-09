@@ -1,12 +1,12 @@
 const express = require('express');
+const Activity = require('../models/Activity');
 const Feedback = require('../models/Feedback');
+const User = require('../models/User');
 const app = express();
 
 
-/**
- * GET the list of feedbacks.
- */
-app.get('/', async (request, response, next) => {
+// GET the list of feedbacks.
+app.get('', async (request, response, next) => {
     try {
         const feedbacks = await Feedback.findAll();
         if (feedbacks.length > 0) {
@@ -19,9 +19,7 @@ app.get('/', async (request, response, next) => {
     }
 });
 
-/**
- * GET a feedback by id.
- */
+// GET a feedback by id.
 app.get('/:feedbackId', async (request, response, next) => {
     try {
         const feedback = await Feedback.findByPk(request.params.feedbackId);
@@ -35,17 +33,16 @@ app.get('/:feedbackId', async (request, response, next) => {
     }
 });
 
-/**
- * POST a new feedback made by a user at an activity.
- */
-app.post('/new/users/:userId/activities/:activityId', async (req, response, next) => {
+// POST a new feedback made by a user at an activity.
+app.post('/users/:userId/activities/:activityId', async (req, response, next) => {
     try {
-        const user = await User.findByPk(req.params.userId);
-        if (user) {
-            if (user.usertypeId == 2) {
-                const activities = await user.getActivities({ id: req.params.activityId });
-                const activity = activities.shift();
-                if (activity) {
+        const user1 = await User.findByPk(req.params.userId);
+        if (user1) {
+            const activity = await Activity.findByPk(req.params.activityId);
+            if (activity) {
+                const users = await activity.getUsers();
+                const user2 = users.shift();
+                if (user2.usertypeId == 1 && user2.id == req.params.userId) {
                     if (req.body.description && req.body.type && req.body.date) {
                         const feedback = await Feedback.create(req.body);
                         activity.addFeedback(feedback);
@@ -54,7 +51,7 @@ app.post('/new/users/:userId/activities/:activityId', async (req, response, next
                     }
                     else response.status(400).json({ message: 'Malformed request!' });
                 } else response.status(404).json({ message: 'Student is not enrolled at such activity!' });
-            } else response.status(400).json({ message: 'User must be a professor!' });
+            } else response.status(404).json({ message: 'Student is not enrolled at such activity!' });
         } else {
             response.status(404).json({ message: 'User not found!' });
         }
@@ -63,9 +60,7 @@ app.post('/new/users/:userId/activities/:activityId', async (req, response, next
     }
 });
 
-/**
- * PUT to update a feedback.
- */
+// PUT to update a feedback.
 app.put('/:feedbackId', async (request, response, next) => {
     try {
         const feedback = await Feedback.findByPk(request.params.feedbackId);
@@ -81,9 +76,7 @@ app.put('/:feedbackId', async (request, response, next) => {
     }
 });
 
-/**
- * DELETE a feedback.
- */
+// DELETE a feedback.
 app.delete('/:feedbackId', async (request, response, next) => {
     try {
         const feedback = await Feedback.findByPk(request.params.feedbackId);

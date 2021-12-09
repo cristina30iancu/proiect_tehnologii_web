@@ -3,17 +3,9 @@ const app = express();
 
 // Import created models
 const User = require('../models/User');
-const UserType = require('../models/UserType');
 const Activity = require('../models/Activity');
-// Define entities relationship
-//UserType.hasMany(User); si user are usertypeid
-// Activity.belongsToMany(User);// user are activityId
-// User.hasMany(Activity,{ target: 'Enrollments'});
 
-
-/**
- * GET the list of activities.
- */
+// GET the list of activities.
  app.get('/', async (request, response, next) => {
     try {
         const activities = await Activity.findAll();
@@ -27,9 +19,7 @@ const Activity = require('../models/Activity');
     }
   });
   
-  /**
-   * GET an activity by id.
-   */
+  // GET an activity by id.
   app.get('/:activityId', async (request, response, next) => {
     try {
       const activity = await Activity.findByPk(request.params.activityId);
@@ -43,9 +33,7 @@ const Activity = require('../models/Activity');
     }
   });
   
-  /**
-   * POST a new activity made by a professor.
-   */
+  // POST a new activity made by a professor.
   app.post('/:userId', async (req, response, next) => {
     try {
       const user = await User.findByPk(req.params.userId);
@@ -53,6 +41,7 @@ const Activity = require('../models/Activity');
           if(user.usertypeId == 2){
             if(req.body.description&&req.body.code&&req.body.date){
               const par = {
+                id: req.body.id,
                 description: req.body.description,
                 code: req.body.code,
                 date: new Date(req.body.date),
@@ -71,9 +60,7 @@ const Activity = require('../models/Activity');
     }
   });
   
-  /**
-   * PUT to update an activity.
-   */
+  // PUT to update an activity.
   app.put('/:activityId', async (request, response, next) => {
     try {
       const activity = await Activity.findByPk(request.params.activityId);
@@ -95,9 +82,7 @@ const Activity = require('../models/Activity');
     }
   });  
   
-  /**
-   * DELETE an activity.
-   */
+  // DELETE an activity.
    app.delete('/:activityId', async (request, response, next) => {
     try {
       const activity = await Activity.findByPk(request.params.activityId);
