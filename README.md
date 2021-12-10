@@ -1,3 +1,5 @@
+<b>GRUPA 1085 - IANCU CRISTINA & GLEJARU COSTIN</b>
+
 <h1>Aplicatie web pentru acordarea de feedback continuu</h1>
 <h2>Aspecte arhitecturale</h2>
 Acest proiect are ca obiectiv realizarea unei aplicații web pentru acordarea de feedback continuu unei activitati (un curs sau seminar). Arhitectura va fi de tip Single Page Application accesibilă în browser de pe desktop, dispozitive mobile sau tablete (in functie de preferințele utilizatorului).
