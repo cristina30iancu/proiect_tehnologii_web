@@ -30,8 +30,9 @@ const authenticationMiddleware = (req, res, next) => {
   if (userObject.error) { // daca token-ul exista, dar este gresit, inseamna ca este invalid
     return res.status(403).json({ error: 'Error when trying to authenticate' });
   }
-  req.id = userObject.id;
-  req.usertypeId = userObject.usertypeId;
+  console.log(userObject)
+  req.userId = userObject.userId;
+  req.userType = userObject.userType;
   next();
 };
 

@@ -22,7 +22,7 @@ app.post('/login', async (req, res, next) => {
           res.status(200).json({
             message: 'Success',
             token: encodeToken({ userId: user.id, userType: user.usertypeId }),
-          });
+          }); 
         } else {
           res.status(403).json({ error: 'The password is incorrect' });
         }

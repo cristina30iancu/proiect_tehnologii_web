@@ -2,40 +2,49 @@ const express = require('express');
 const Activity = require('../models/Activity');
 const Feedback = require('../models/Feedback');
 const User = require('../models/User');
+const { authenticationMiddleware } = require('./authServer');
 const app = express();
 
-
-// GET the list of feedbacks.
-app.get('', async (request, response, next) => {
+// GET the list of feedbacks, only if you are professor.
+app.get('', authenticationMiddleware,async (request, response, next) => {
     try {
-        const feedbacks = await Feedback.findAll();
-        if (feedbacks.length > 0) {
-            response.json(feedbacks);
-        } else {
-            response.sendStatus(204);
-        }
+        if(request.userType=='2'){
+            const activities = await Activity.findAll({where: {creator:request.userId}});
+            const activity = activities.shift();
+            const feedbacks =  await activity.getFeedbacks();
+            if (feedbacks.length > 0) {
+                response.json(feedbacks);
+            } else {
+                response.sendStatus(204);
+            }
+        } 
+        else response.status(403).json({ message: 'Your are not the professor!' })
     } catch (error) {
         next(error);
     }
 });
 
 // GET a feedback by id.
-app.get('/:feedbackId', async (request, response, next) => {
+app.get('/:feedbackId',authenticationMiddleware, async (request, response, next) => {
     try {
+        if(request.userType=='2'){
         const feedback = await Feedback.findByPk(request.params.feedbackId);
         if (feedback) {
             response.json(feedback);
         } else {
             response.status(404).json({ message: 'Feedback Not Found!' })
+            }
         }
+        else response.status(403).json({ message: 'Your are not the professor!' })
     } catch (error) {
         next(error);
     }
 });
 
 // POST a new feedback made by a user at an activity.
-app.post('/users/:userId/activities/:activityId', async (req, response, next) => {
+app.post('/users/:userId/activities/:activityId',authenticationMiddleware, async (req, response, next) => {
     try {
+        if(req.userType=='1'){
         const user1 = await User.findByPk(req.params.userId);
         if (user1) {
             const activity = await Activity.findByPk(req.params.activityId);
@@ -55,14 +64,16 @@ app.post('/users/:userId/activities/:activityId', async (req, response, next) =>
         } else {
             response.status(404).json({ message: 'User not found!' });
         }
+     } else response.status(403).json({ message: 'Your are not the student!' })
     } catch (error) {
         next(error);
     }
 });
 
 // PUT to update a feedback.
-app.put('/:feedbackId', async (request, response, next) => {
+app.put('/:feedbackId',authenticationMiddleware, async (request, response, next) => {
     try {
+        if(request.userType=='1'){
         const feedback = await Feedback.findByPk(request.params.feedbackId);
         if (feedback) {
             if (request.body.description && request.body.type && request.body.date) {
@@ -71,6 +82,7 @@ app.put('/:feedbackId', async (request, response, next) => {
         } else {
             response.sendStatus(404);
         }
+    } else response.status(403).json({ message: 'Your are not the student!' })
     } catch (error) {
         next(error);
     }

@@ -1,5 +1,47 @@
 <b>GRUPA 1085 - IANCU CRISTINA & GLEJARU COSTIN</b>
 
+<b>RUTE: </b>
+Toate rutele sunt prefixate cu http://localhost:3001/.
+
+<i>Rute baza de date:</i>
+GET http://localhost:3001/create -> creeaza baza de date cu modelele
+GET http://localhost:3001/update -> actualizeaza baza de date cu modelele
+
+<i>Rute de login:</i>
+POST http://localhost:3001/login -> in body se trece userName si password ( cel initial, necriptat). Parolele sunt 123, pentru testare.
+GET http://localhost:3001/logged -> intoarce datele utilizatorului logat
+
+<i>Rute pentru useri:</i>
+GET http://localhost:3001/users -> intoarce userii
+POST http://localhost:3001/users -> adauga un user, avand in body atributele complete (id poate fi omis)
+GET http://localhost:3001/users/:userId -> intoarce userul cu id-ul cerut
+PUT http://localhost:3001/users/:userId -> actualizeaza userul cu id-ul cerut, atributele trebuie sa fie in body
+DELETE http://localhost:3001/users/:userId -> sterge userul cu id-ul cerut
+POST http://localhost:3001/users/:userId/activities/:activityId/enroll -> inscrie un student la o activitate
+
+
+GET http://localhost:3001/usertypes -> intoarce tipurile de utilizatori (1- stud, 2 -prof)
+POST http://localhost:3001/usertypes -> adauga un usertype, avand in body atributele complete (id nu e indicat sa fie omis, va fi utilizat)
+GET http://localhost:3001/usertypes/:usertypeId -> intoarce usertypeul cu id-ul cerut
+PUT http://localhost:3001/usertypes/:usertypeId  -> actualizeaza usertype, cu id-ul cerut, atributele trebuie sa fie in body
+DELETE http://localhost:3001/usertypes/:usertypeId  -> sterge usertype-ul cu id-ul cerut
+
+<i>Rute pentru activitati:</i>
+GET http://localhost:3001/activities/ -> intoarce activitatile
+GET http://localhost:3001/activities/:activityId -> intoarce activitatile dupa id
+GET http://localhost:3001/activities/:userId -> intoarce activitatile unui profesor, cu verificare autentificare
+PUT http://localhost:3001/activities/:activityId -> modifica activitatea, daca e autentificat creatorul ei
+DELETE http://localhost:3001/activities/:activityId -> sterge activitatea, daca e autentificat creatorul ei
+
+<i>Rute de feedback:</i>
+GET http://localhost:3001/feedbacks -> intoarce feedbackurile primei activitati create de profesorul autentificat
+GET http://localhost:3001/feedbacks/:feedbackId -> intoarce feedbackurile unei activitati dupa id create de profesorul autentificat
+POST http://localhost:3001/feedbacks/users/:userId/activities/:activityId -> adauga un nou feedback de catre studentul autentificat la o activitate la care e inscris
+PUT http://localhost:3001/feedbacks/:feedbackId -> actualizare feedback de catre studentul autentificat la o activitate la care e inscris
+DELETE http://localhost:3001/feedbacks/:feedbackId -> stergere feedback de catre studentul autentificat la o activitate la care e inscris
+
+---------------------------------------------------------------------------
+
 <h1>Aplicatie web pentru acordarea de feedback continuu</h1>
 <h2>Aspecte arhitecturale</h2>
 Acest proiect are ca obiectiv realizarea unei aplicații web pentru acordarea de feedback continuu unei activitati (un curs sau seminar). Arhitectura va fi de tip Single Page Application accesibilă în browser de pe desktop, dispozitive mobile sau tablete (in functie de preferințele utilizatorului).
