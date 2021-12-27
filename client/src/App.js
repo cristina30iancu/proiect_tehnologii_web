@@ -22,7 +22,7 @@ function App() {
   }, []);
 
   const onLogin = (enteredEmail, enteredPassword) => {
-    fetch('http://localhost:3001/user/login', {
+    fetch('http://localhost:3001/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

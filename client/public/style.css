@@ -413,3 +413,43 @@ body {
       margin: 10px;
   margin-left: 30px;
   }
+
+  #profile-pic{
+    width: 30px;
+    height: 40px;
+    border-radius: 100%;
+  }
+
+  #navbar {
+    z-index: 2000 !important;
+    width: 100%;
+    height: 12vh;
+    padding: 0;
+    position: fixed;
+    -webkit-transition: top 0.3s ease-in-out;
+    transition: top 0.3s ease-in-out;
+    background-color: #7fb9af !important;
+  }
+  
+  #navbar #logo {
+    height: 3em;
+    padding-left: 1em;
+  }
+  
+  #navbar .navbar-brand {
+    font-weight: 600;
+  }
+  
+  #navbar .nav-item a {
+    color: rgb(255, 255, 255) !important;
+    font-weight: 500;
+  }
+  #name{
+    height: 12vh;
+    margin-left: 12px;
+    margin-top: 12px;
+    line-height: normal;
+  }
+  #name p{
+    font-size: 12px !important;
+  }
