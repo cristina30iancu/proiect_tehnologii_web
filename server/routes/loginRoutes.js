@@ -37,9 +37,8 @@ app.post('/login', async (req, res, next) => {
 
 //intoarce datele utilizatorului autentificat
 app.get('/logged', authenticationMiddleware, async (req, res) => {
-  if (req.body.userName) {
-    const name = req.body.userName;
-    const user = await User.findOne({ where: { userName: name } });
+  if (req.userId) {
+   const user = await User.findByPk(req.userId);
     if (user) {
       const data = { ...user };
       delete data.password;

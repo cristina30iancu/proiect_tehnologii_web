@@ -1,4 +1,4 @@
-import LoginForm from './components/loginForm';
+import LoginForm from './components/LoginForm';
 import { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import ProfessorPage from './pages/ProfessorPage';

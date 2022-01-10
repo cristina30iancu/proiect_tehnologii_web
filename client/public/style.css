@@ -12,7 +12,89 @@ body {
   margin-right: 1vw;
 }
 
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: white;
+  }
+  
+  * {
+    box-sizing: border-box;
+  }
+  .container {
+    position: absolute;
+    top:12vh;
+    padding: 30px;
+    text-align: center;
+    background-color: white;
+  }
+  h1{
+    font-family: Brush Script MT;
+    font-size: 60px;
+    text-align: center !important;
+    font-weight: bold;
+    
+}
+/* h2{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 30px;
+    text-align: left;
+    font-weight: bold;
+} */
+h3{
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 15px !important;
+    text-align: left !important;
+}
 
+hr {
+    border: 1px solid #f1f1f1;
+    margin-bottom: 25px;
+  }
+input[type=text], input[type=descriere] {
+    width: 100%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    display: inline-block;
+    border: none;
+    background: #f1f1f1;
+  }
+  
+input[type=text]:focus, input[type=descriere]:focus {
+    background-color: #ddd;
+    outline: none;
+}
+
+.custombtn {
+    background-color: black;
+    color: white;
+    padding: 16px 20px;
+    margin: 2vw ;
+    border: none;
+    cursor: pointer;
+    width: 95vw;
+    opacity: 0.9;
+    display:flex;
+    flex-flow: row nowrap;
+    text-align: center;
+  }
+.custombtn:hover {
+    opacity: 1;
+}
+table, td {
+    border:2px solid black;
+    background-color: white;
+  }
+th{
+    border: 2px solid black;
+    font-weight: bold;
+    width: 200px;
+}
+label{
+    font-family: Arial, Helvetica, sans-serif;
+    color: black;
+    padding: 8px;
+}
+  
 
 /* STRUCTURE */
 
@@ -452,4 +534,8 @@ body {
   }
   #name p{
     font-size: 12px !important;
+  }
+  .pagina{
+    position: absolute;
+    top:50vh;
   }
