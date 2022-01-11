@@ -510,7 +510,7 @@ label{
     position: fixed;
     -webkit-transition: top 0.3s ease-in-out;
     transition: top 0.3s ease-in-out;
-    background-color: #7fb9af !important;
+    background-color: #adadad !important;
   }
   
   #navbar #logo {

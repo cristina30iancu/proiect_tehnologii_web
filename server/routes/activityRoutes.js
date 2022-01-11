@@ -43,7 +43,6 @@ app.post('/:userId', authenticationMiddleware, async (req, response, next) => {
         if (user.usertypeId == 2) {
           if (req.body.description && req.body.code && req.body.date) {
             const par = {
-              id: req.body.id,
               description: req.body.description,
               code: req.body.code,
               date: new Date(req.body.date),

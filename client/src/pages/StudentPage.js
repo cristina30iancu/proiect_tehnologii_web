@@ -11,7 +11,7 @@ function StudentPage() {
     })
       .then((res) => res.json())
       .then((data) => {
-        setStudent(data);
+        setStudent(data.dataValues);
         console.log(data.dataValues)
       });
   };
@@ -22,11 +22,14 @@ useEffect(() => {
 
 const [student,setStudent] = useState();
 return (
-  <div className='pagina'>  StudentPage    
-  <h1 className='textPagina'>
-        Bine ai venit,  { student&&student.firstName + ' ' + student.lastName}
-      </h1>
-  </div>
+  <div class="container">
+    <h1>continuos feedback app</h1>
+    <h2>Salut, bine ai revenit,  { student&&student.firstName + ' ' + student.lastName}!</h2>
+    <h3>Dorești să te inrolezi activitate noua?</h3>
+    <button type="button" class="custombtn">Inrolare activitate</button>
+    <h3>Dorești să setezi activitatea ca default</h3>
+    <button type="button" class="custombtn">Setare default</button>
+</div>
 );
 }
 
