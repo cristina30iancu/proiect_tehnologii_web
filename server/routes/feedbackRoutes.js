@@ -44,9 +44,8 @@ app.get('/:feedbackId',authenticationMiddleware, async (request, response, next)
 // POST a new feedback made by a user at an activity.
 app.post('/users/:userId/activities/:activityId',authenticationMiddleware, async (req, response, next) => {
     try {
-        if(req.userType=='1'){
-        const user1 = await User.findByPk(req.params.userId);
-        if (user1) {
+       const user1 = await User.findByPk(req.params.userId);
+        if (user1 ) {
             const activity = await Activity.findByPk(req.params.activityId);
             if (activity) {
                 const users = await activity.getUsers();
@@ -62,9 +61,8 @@ app.post('/users/:userId/activities/:activityId',authenticationMiddleware, async
                 } else response.status(404).json({ message: 'Student is not enrolled at such activity!' });
             } else response.status(404).json({ message: 'Student is not enrolled at such activity!' });
         } else {
-            response.status(404).json({ message: 'User not found!' });
+            response.status(404).json({ message: 'User not found!'+user1.usertypeId+req.params.userId });
         }
-     } else response.status(403).json({ message: 'Your are not the student!' })
     } catch (error) {
         next(error);
     }

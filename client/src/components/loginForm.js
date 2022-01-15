@@ -101,9 +101,9 @@ function LoginForm(props) {
               </a>
               <h2>SIGN UP</h2>
               <input type="text" placeholder="Email" />
-              <input type="text" placeholder="User" />
-              <input type="password" placeholder="Password" />
-              <input type="password" placeholder="Confirm Password" />
+              <input type="text" placeholder="Nume" />
+              <input type="text" placeholder="Prenume" />
+              <input type="password" placeholder="Parola" />
               <button class="btn_sign_up" onClick={changeSignUp}>
                 SIGN UP
               </button>

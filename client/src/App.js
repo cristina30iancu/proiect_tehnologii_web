@@ -57,7 +57,8 @@ function App() {
   };
   return (
     <div>
-      <Navbar onLogout={onLogout} isLoggedIn={isLoggedIn} />
+       {isLoggedIn ?<Navbar onLogout={onLogout} isLoggedIn={isLoggedIn} /> : ''}
+      
       {isLoggedIn === false ? <LoginForm onLogin={onLogin} /> : ''}{' '}
       {isLoggedIn && isProfessor ? <ProfessorPage /> : ''}
       {isLoggedIn && !isProfessor ? <StudentPage /> : ''}
