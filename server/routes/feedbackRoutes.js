@@ -6,7 +6,7 @@ const { authenticationMiddleware } = require('./authServer');
 const app = express();
 
 // GET the list of feedbacks, only if you are professor.
-app.get('', authenticationMiddleware,async (request, response, next) => {
+app.get('/all', authenticationMiddleware,async (request, response, next) => {
     try {
         if(request.userType=='2'){
             const activities = await Activity.findAll({where: {creator:request.userId}});
@@ -19,6 +19,44 @@ app.get('', authenticationMiddleware,async (request, response, next) => {
             }
         } 
         else response.status(403).json({ message: 'Your are not the professor!' })
+    } catch (error) {
+        next(error);
+    }
+});
+
+// GET the list of feedbacks of an activity, only if you are professor.
+app.get('/activity/:activityId', authenticationMiddleware,async (request, response, next) => {
+    try {
+        if(request.userType=='2'){
+            const activity = await Activity.findByPk(request.params.activityId);
+            const feedbacks =  await activity.getFeedbacks();
+            if (feedbacks.length > 0) {
+                response.json(feedbacks);
+            } else {
+                response.sendStatus(204);
+            }
+        } 
+        else response.status(403).json({ message: 'Your are not the professor!' })
+    } catch (error) {
+        next(error);
+    }
+});
+
+// GET the list of feedbacks sent by you if you are a student.
+app.get('', authenticationMiddleware,async (request, response, next) => {
+    try {
+        if(request.userType=='1'){
+            const user = await User.findByPk(request.userId)
+            if (user){
+                const feedbacks =  await user.getFeedbacks();
+                if (feedbacks.length > 0) {
+                    response.json(feedbacks);
+                } else {
+                    response.sendStatus(204);
+                }
+            } else response.status(404).json({ message: 'User not found!' })
+        } 
+        else response.status(403).json({ message: 'Your are not the user!' })
     } catch (error) {
         next(error);
     }
@@ -55,6 +93,8 @@ app.post('/users/:userId/activities/:activityId',authenticationMiddleware, async
                         const feedback = await Feedback.create(req.body);
                         activity.addFeedback(feedback);
                         await activity.save();
+                        user1.addFeedback(feedback);
+                        await user1.save();
                         response.status(201).json({ message: 'Feedback Created!' });
                     }
                     else response.status(400).json({ message: 'Malformed request!' });

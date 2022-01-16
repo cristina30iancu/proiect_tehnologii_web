@@ -10,6 +10,7 @@ const Feedback = require('../models/Feedback');
 
 // Define entities relationship
 UserType.hasMany(User);
+User.hasMany(Feedback);
 User.hasMany(Activity, {foreignKey: 'creator'});
 Activity.belongsToMany(User,{ through: 'enrollements'});// many to many
 User.belongsToMany(Activity, {through: 'enrollements'});

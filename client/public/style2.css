@@ -77,7 +77,10 @@
   }
   
   .navbar .nav-left .nav-item:hover {
-    color: #d62c2c !important;
+    color: #020202 !important;
+    transform: translateY(-3px);
+    box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+    border-radius: 20px;
   }
   
   .navbar .nav-center {
@@ -485,10 +488,21 @@
   -webkit-transition: all .35s ease-in-out;
   transition: all .35s ease-in-out;
 }
+.tablefeedback{
+  width:100%;
+}
 #selectImoji{
   width: 150px !important; min-width: 150px; max-width: 250px;
 }
-
+table, td {
+  border:2px solid black !important;
+  background-color: white !important;
+}
+th{
+  border: 2px solid black !important;
+  font-weight: bold !important;
+  width: 200px !important;
+}
  .professors-display {
   position: absolute;
   display: -webkit-box;

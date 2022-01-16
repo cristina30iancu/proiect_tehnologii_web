@@ -112,9 +112,9 @@ app.delete('/usertypes/:usertypeId', async (request, response, next) => {
   }
 });
 // UPDATE an user by id.
-app.put('/users/:userId', async (request, response, next) => {
+app.put('/users/:userId', async (req, response, next) => {
   try {
-      const user = await User.findByPk(request.params.userId);
+      const user = await User.findByPk(req.params.userId);
       if (user) {
         if ( req.body.lastName && req.body.firstName && req.body.userName && req.body.password && req.body.usertypeId ) {
           const usertype = await UserType.findByPk(req.body.usertypeId);
