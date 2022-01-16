@@ -87,18 +87,20 @@ app.post('/users/:userId/activities/:activityId',authenticationMiddleware, async
             const activity = await Activity.findByPk(req.params.activityId);
             if (activity) {
                 const users = await activity.getUsers();
-                const user2 = users.shift();
-                if (user2.usertypeId == 1 && user2.id == req.params.userId) {
-                    if (req.body.description && req.body.type && req.body.date) {
-                        const feedback = await Feedback.create(req.body);
-                        activity.addFeedback(feedback);
-                        await activity.save();
-                        user1.addFeedback(feedback);
-                        await user1.save();
-                        response.status(201).json({ message: 'Feedback Created!' });
+                for(let u of users){
+                    if (u.usertypeId == 1 && u.id == req.params.userId) {
+                        if (req.body.description && req.body.type && req.body.date) {
+                            const feedback = await Feedback.create(req.body);
+                            activity.addFeedback(feedback);
+                            await activity.save();
+                            user1.addFeedback(feedback);
+                            await user1.save();
+                            response.status(201).json({ message: 'Feedback Created!' });
+                        }
+                        else response.status(400).json({ message: 'Malformed request!' });
                     }
-                    else response.status(400).json({ message: 'Malformed request!' });
-                } else response.status(404).json({ message: 'Student is not enrolled at such activity!' });
+                }
+                response.status(404).json({ message: 'Student is not enrolled at such activity!' });
             } else response.status(404).json({ message: 'Student is not enrolled at such activity!' });
         } else {
             response.status(404).json({ message: 'User not found!'+user1.usertypeId+req.params.userId });
