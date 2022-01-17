@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import Activity from '../components/Activity';
-import Feedback from '../components/Feedback';
+import { ToastContainer, toast } from 'react-toastify';
 
 function ProfessorPage() {
   const [createActivity, setCreateActivity] = useState(false);
@@ -30,8 +30,53 @@ function ProfessorPage() {
         setProfessor(data.dataValues)
       });
   };
-
+  const getAllExistentActivities = (prof) => {
+    if(!cod.current.value || !descriere.current.value || !date.current.value){
+      toast.error("Completati campurile!", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+        return;
+    }
+    fetch(`http://localhost:3001/activities/`, {
+      method: 'GET',
+      headers: {
+        Authorization: localStorage.getItem('token'),
+        'Content-Type': 'application/json',
+      },
+    }).then((res) => res.json())
+      .then((data) => {
+        for(let a of data){
+          if(a.code==cod.current.value)
+          toast.error("Exista activitate cu acest cod!", {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            })
+          return;
+        }
+        makeRequest(prof)
+      }).catch((e) => toast.error("Nu s-au putut prelua activitatile!", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        }));
+  };
   const makeRequest = (prof) => {
+    
     fetch(`http://localhost:3001/activities/${prof.id}`, {
       method: 'POST',
       headers: {
@@ -43,7 +88,30 @@ function ProfessorPage() {
         description: descriere.current.value,
         code: cod.current.value,
       }),
-    });
+    }).then((res)=>
+    {
+      if(res.status==400){
+        toast.error("Nu s-a creat activitatea!", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          }); return;
+      } getAllActivities(professor);
+      showActivity();
+    })
+    .catch((e) => toast.error("Nu s-a creat activitatea!", {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      }));
   };
   const getAllActivities = (prof) => {
     fetch(`http://localhost:3001/activities/users/${prof.id}`, {
@@ -56,7 +124,15 @@ function ProfessorPage() {
       .then((data) => {
         setActivities(data)
         console.log(data[0])
-      });
+      }).catch((e) => toast.error("Nu s-au putut prelua activitatile!", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        }));
   };
   
 const getFeedbackOfActivity = (activity) =>{
@@ -66,7 +142,6 @@ const getFeedbackOfActivity = (activity) =>{
      console.log(codPtFeedback.current.value)
          if(a.code == codPtFeedback.current.value){
             id = a.id;
-          
           }
          })
   } else id = activity.id;
@@ -96,7 +171,15 @@ p++
         let array = [e,g,a,p];
         setArrayTypes(array);
     }).catch(error => {let array = [0,0,0,0];
-      setArrayTypes(array);});
+      setArrayTypes(array);toast.warn("Nu sunt feedback-uri!", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        })});
 };
 // const getAllFeedbacks = () => {
 //   fetch(`http://localhost:3001/feedbacks/all`, {
@@ -142,8 +225,7 @@ p++
   }
   
   const showAddActivityPage = (
-    <div className="container">
-       <button onClick={hideForm}   className='button-27'>mergi inapoi</button>
+    <div id="container">
       <h1>Creare activitate</h1>
       <label for="cod"><b>Cod Activitate</b></label>
       <input type="descriere" placeholder="Introduceti cod" ref={cod} name="cod" id="cod" required></input>
@@ -155,17 +237,15 @@ p++
       <input type="date" placeholder="Data activitate" ref={date} name="data" id="data" required></input>
 
       <button type="submit" className="custombtn" onClick={() => {
-         makeRequest(professor);
-        getAllActivities(professor);
-        showActivity();
+        getAllExistentActivities(professor)
       }}
       >Creare activitate</button>
     </div>
   )
   const profPage = (
-    <div className="container">
-      <h1>Buna ziua, domnule profesor  {professor && professor.firstName + ' ' + professor.lastName}!</h1>
-      <hr/>
+    <div id="container">
+      <h1>Buna ziua, {professor && professor.firstName + ' ' + professor.lastName}!</h1>
+      <br/>
 <br/>
       <h3>Doriti să creați o activitate noua?</h3>
       <button type="button" className="custombtn" onClick={showForm} >Creare activitate</button>
@@ -186,11 +266,9 @@ p++
     <div className="page-content">
       <div className="professors-display row col-xs-12">
         <div className="title">
-          <button onClick={hideForm}   className='button-27'>mergi inapoi</button>
         <h1>Activitatile create</h1></div>
         <div  className="professor-list row">
-        <img src={'https://media.istockphoto.com/photos/gray-abstract-minimal-motion-backgrounds-loopable-elements-4k-picture-id1174989482?b=1&k=20&m=1174989482&s=170667a&w=0&h=ld7ukW9KTzUlJLc6c37C2xs5ESYP2wLyjxsEVCumn2s='} className="prof-background"></img>
-          <div className="professor-cards row" >
+         <div className="professor-cards row" >
             {activities.map((activity,i) => (
               <Activity key={i}
                 activity={activity}
@@ -209,8 +287,7 @@ p++
   )
   
   const feedBackPage = (
-    <div class="container">
-       <button onClick={hideForm}   className='button-27'>mergi inapoi</button>
+    <div id="container">
 <h1>Vizualizare feedback</h1>
 <hr/>
 <br/>
@@ -241,7 +318,7 @@ p++
   );
 
   return (
-    <div >
+    <div id='1' >
       {createActivity  ? showAddActivityPage : 
         showHome ? profPage : 
           showFeedback ? feedBackPage : 

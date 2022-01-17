@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import Feedback from '../components/Feedback';
+import { ToastContainer, toast } from 'react-toastify';
 
 function StudentPage() {
   const [createFeedback, setCreateFeedback] = useState(false);
@@ -40,10 +41,35 @@ function StudentPage() {
                 Authorization: localStorage.getItem('token'),
                 'Content-Type': 'application/json',
               },
-            });
+            }).then(()=> toast.success('Inrolare cu succes!', {
+              position: "top-right",
+              autoClose: 1500,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              }));
            }
-      });      
-      });
+      }); if(activity2==null)
+      toast.error("Activitate inexistenta!", {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      })     
+      }).catch((e) => toast.error("Date incorecte", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        }));;
   };
   const getBackendData = () => {
     fetch('http://localhost:3001/logged', {
@@ -57,29 +83,21 @@ function StudentPage() {
       .then((data) => {
         setStudent(data.dataValues);
         console.log(data.dataValues);
-      });
-  };
-
-  const getAllFeedbacks = () =>{
-    fetch(`http://localhost:3001/feedbacks`, {
-      method: 'GET',
-      headers: {
-        Authorization: localStorage.getItem('token'),
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setFeedbacks(data)
-        console.log(data)
-      })
+      }).catch((e) => toast.error("Date incorecte", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        }));;
   };
 
 const addedFeedback = (
   <div className="page-content">
   <div className="professors-display row col-xs-12">
     <div className="title">
-      <button onClick={hideForm}   className='button-27'>mergi inapoi</button>
     <h1>Feedbackul a fost transmis!</h1></div>
     <div  className="professor-list row">
     <img src={'https://media.istockphoto.com/photos/gray-abstract-minimal-motion-backgrounds-loopable-elements-4k-picture-id1174989482?b=1&k=20&m=1174989482&s=170667a&w=0&h=ld7ukW9KTzUlJLc6c37C2xs5ESYP2wLyjxsEVCumn2s='} className="prof-background"></img>
@@ -105,6 +123,18 @@ const addedFeedback = (
 // app.post('/users/:userId/activities/:activityId',authenticationMiddleware, async (req, response, next) => {
   // http://localhost:3001/feedbacks/users/1/activities/a3dd8247-cf56-4616-8f39-a663fc8605e7
   const postFeedback = (stud,activity) => {
+    if(activity==null){
+      toast.error("Introdu activitate valida!", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+        return;
+    }
     fetch(`http://localhost:3001/feedbacks/users/${stud.id}/activities/${activity.id}`, {
       method: 'POST',
       headers: {
@@ -117,6 +147,15 @@ const addedFeedback = (
         type: tip.current.value,
       }),
     }).then(()=>{
+      toast.success('Feedback transmis!', {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
       fetch(`http://localhost:3001/feedbacks`, {
       method: 'GET',
       headers: {
@@ -128,8 +167,25 @@ const addedFeedback = (
       .then((data) => {
         setFeedbacks(data)
         console.log(data)
-      })
-    });
+        showFeedback();
+      }).catch((e) => toast.error("Date incorecte", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        }));
+    }).catch((e) => toast.error("Introdu activitate valida!", {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      }));
   };
   
 useEffect(() => {
@@ -151,8 +207,7 @@ function showForm() {
 }
 
 const showAddFeedback = (
-  <div class="container">
-    <button onClick={hideForm}   className='button-27'>mergi inapoi</button>
+  <div id="container">
     <h1>Trimitere feedback</h1>
     <label for="id"><b>COD Activitate</b></label>
     <input type="text" ref={cod} placeholder="Introduceti codul" name="ID" id="ID" required=""></input>
@@ -170,14 +225,13 @@ const showAddFeedback = (
     </select>
     <button type="submit" class="custombtn" onClick={() => {
         postFeedback(student,activity)
-        showFeedback();
       }}>Trimitere feedback</button>
   </div>
 );
 
 
 const studPage = (
-  <div class="container">
+  <div id="container">
   <h1>Salut, bine ai revenit,  { student&&student.firstName + ' ' + student.lastName}!</h1>
   <h3>Dorești să te inrolezi intr-o activitate noua?</h3>
   <button type="button" class="custombtn"  onClick={showForm}>Inrolare activitate</button>

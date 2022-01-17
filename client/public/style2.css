@@ -16,10 +16,35 @@
   * a {
     text-decoration: none !important;
   }
-  
-  body {
-    margin: 0;
+  .main{
+    width: 100vw;
+    background: linear-gradient(-45deg, #ffb8a2, #ffffff, #9ca9ad, #c4fff1) !important;
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
   }
+  body {
+    background: linear-gradient(-45deg, #ffb8a2, #ffffff, #9ca9ad, #c4fff1) !important;
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+    /* height: 100vh; */
+  }
+  
+  @keyframes gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  
+  /* body {
+    margin: 0;
+    background: url(https://media.istockphoto.com/photos/blue-background-picture-id157571423?k=20&m=157571423&s=612x612&w=0&h=GxSD_uRBNlBtsvXo54kGstPong-zzqKR545fF1Y5Mws=);
+  } */
   #mySidenavLeft{
     box-shadow: var(--shadow-var);
     background-color:rgb(247, 247, 247);
@@ -70,12 +95,26 @@
   .navbar .nav-left .nav-item {
     color: white;
     font-size: 15px;
-    padding: 1em 1em;
+    padding: 1.5em 1em;
     font-weight: 500;
     -webkit-transition: all .35s ease-in-out;
     transition: all .35s ease-in-out;
   }
-  
+  .title-app{
+    color: white;
+    font-family: 'Games', sans-serif;
+    font-size: 25px;
+    padding: 0.5em 0.5em;
+    font-weight: 100;
+    -webkit-transition: all .35s ease-in-out;
+    transition: all .35s ease-in-out;
+  }
+  .title-app{
+    text-decoration: none;
+  }
+  .title-app:hover{
+    color:#2b363a;
+  }
   .navbar .nav-left .nav-item:hover {
     color: #020202 !important;
     transform: translateY(-3px);
@@ -435,9 +474,7 @@
   }
   
   @media only screen and (max-width: 1124px) {
-    .nav-item {
-      display: none;
-    }
+   
     #hamburger {
       display: block !important;
     }
@@ -507,6 +544,7 @@ th{
   position: absolute;
   display: -webkit-box;
   display: -ms-flexbox;
+  background: linear-gradient(-45deg, #ffb8a2, #ffffff, #9ca9ad, #c4fff1) !important;
   display: flex;
   top: 4em;
   padding: 0px;
@@ -627,7 +665,8 @@ th{
   top: 0px;
   left: 0px;
   top: 7em;
-  background: url(https://media.istockphoto.com/photos/gray-abstract-minimal-motion-backgrounds-loopable-elements-4k-picture-id1174989482?b=1&k=20&m=1174989482&s=170667a&w=0&h=ld7ukW9KTzUlJLc6c37C2xs5ESYP2wLyjxsEVCumn2s=);
+  background: linear-gradient(-45deg, #ffb8a2, #ffffff, #9ca9ad, #c4fff1) !important;
+  /* background: url(https://media.istockphoto.com/photos/gray-abstract-minimal-motion-backgrounds-loopable-elements-4k-picture-id1174989482?b=1&k=20&m=1174989482&s=170667a&w=0&h=ld7ukW9KTzUlJLc6c37C2xs5ESYP2wLyjxsEVCumn2s=); */
   -webkit-transition: all .3s ease-in-out;
   transition: all .3s ease-in-out;
 }
@@ -649,8 +688,8 @@ th{
   transition: all .3s ease-in-out;
 }
 .card-body{
-  background-color: rgb(26, 26, 26);
-  color: whitesmoke;
+  /* background-color: rgb(26, 26, 26); */
+  color: rgb(43, 43, 43);
   font-family: Roboto;
   font-style: normal;
   font-weight: bold;

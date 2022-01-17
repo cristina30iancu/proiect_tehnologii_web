@@ -4,7 +4,6 @@ import Navbar from './components/Navbar';
 import ProfessorPage from './pages/ProfessorPage';
 import StudentPage from './pages/StudentPage';
 import jwt_decode from 'jwt-decode';
-import {NotificationContainer, NotificationManager} from 'react-notifications';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -12,26 +11,6 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isProfessor, setIsProfessor] = useState(false);
 
-  const createNotification = (type) => {
-    return () => {
-      switch (type) {
-        case 'info':
-          NotificationManager.info('Info message');
-          break;
-        case 'success':
-          NotificationManager.success('Success message', 'Title here');
-          break;
-        case 'warning':
-          NotificationManager.warning('Warning message', 'Close after 3000ms', 3000);
-          break;
-        case 'error':
-          NotificationManager.error('Error message', 'Click me!', 5000, () => {
-            alert('callback');
-          });
-          break;
-      }
-    };
-  };
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
@@ -51,8 +30,7 @@ function App() {
     if(enteredEmail.match(/^[A-Za-z0-9._%+-]+@stud.ase.ro$/g)) usertype = 1;
      if(enteredEmail.match(/^[A-Za-z0-9._%+-]+@ie.ase.ro$/g)) usertype = 2;
      if (enteredEmail.match(/^[A-Za-z0-9._%+-]+@csie.ase.ro$/g)) usertype = 2;
-    // if (usertype==0)throw new Error();
-    fetch('http://localhost:3001/users', {
+   fetch('http://localhost:3001/users', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -140,11 +118,19 @@ function App() {
     localStorage.removeItem('token');
     setIsLoggedIn(false);
     setIsProfessor(false);
+    toast.success('Delogare cu succes!', {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      });
   };
   return (
-    <div> <ToastContainer />
+    <div className='main'> <ToastContainer />
        {isLoggedIn ?<Navbar onLogout={onLogout} isLoggedIn={isLoggedIn} /> : ''}
-      
       {isLoggedIn === false ? <LoginForm onLogin={onLogin} onSignIn={onSignIn}/> : ''}{' '}
       {isLoggedIn && isProfessor ? <ProfessorPage /> : ''}
       {isLoggedIn && !isProfessor ? <StudentPage /> : ''}

@@ -1,5 +1,5 @@
 
-import book from "../media/book.jfif";
+import book from "../media/onlineclass.svg";
 function Activity(props) {
     return (
     <div 
