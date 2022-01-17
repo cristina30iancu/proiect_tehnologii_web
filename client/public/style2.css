@@ -664,7 +664,7 @@ th{
   z-index: 12;
   top: 0px;
   left: 0px;
-  top: 7em;
+  top: 17vh;
   background: linear-gradient(-45deg, #ffb8a2, #ffffff, #9ca9ad, #c4fff1) !important;
   /* background: url(https://media.istockphoto.com/photos/gray-abstract-minimal-motion-backgrounds-loopable-elements-4k-picture-id1174989482?b=1&k=20&m=1174989482&s=170667a&w=0&h=ld7ukW9KTzUlJLc6c37C2xs5ESYP2wLyjxsEVCumn2s=); */
   -webkit-transition: all .3s ease-in-out;

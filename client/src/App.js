@@ -1,4 +1,4 @@
-import LoginForm from './components/LoginForm';
+import Login from './components/Login';
 import { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import ProfessorPage from './pages/ProfessorPage';
@@ -24,13 +24,14 @@ function App() {
     }
   }, []);
 
-  const onSignIn = (enteredEmail, enteredPassword,fname,lname) => {
+  const onSignIn = (enteredEmail, enteredPassword, fname, lname) => {
     console.log(enteredEmail)
     let usertype = 0;
-    if(enteredEmail.match(/^[A-Za-z0-9._%+-]+@stud.ase.ro$/g)) usertype = 1;
-     if(enteredEmail.match(/^[A-Za-z0-9._%+-]+@ie.ase.ro$/g)) usertype = 2;
-     if (enteredEmail.match(/^[A-Za-z0-9._%+-]+@csie.ase.ro$/g)) usertype = 2;
-   fetch('http://localhost:3001/users', {
+    if (enteredEmail.match(/^[A-Za-z0-9._%+-]+@stud.ase.ro$/g)) usertype = 1;
+    if (enteredEmail.match(/^[A-Za-z0-9._%+-]+@ie.ase.ro$/g)) usertype = 2;
+    if (enteredEmail.match(/^[A-Za-z0-9._%+-]+@csie.ase.ro$/g)) usertype = 2;
+    if (enteredEmail.match(/^[A-Za-z0-9._%+-]+@ase.ro$/g)) usertype = 2;
+    fetch('http://localhost:3001/users', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -53,19 +54,19 @@ function App() {
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-            });
+          });
         } else {
           throw new Error();
         }
       })
-    .catch((e) => toast.error("Date incorecte", {
-      position: "top-right",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
+      .catch((e) => toast.error("Date incorecte", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
       }));
   };
   const onLogin = (enteredEmail, enteredPassword) => {
@@ -89,7 +90,7 @@ function App() {
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-            });
+          });
           return response.json();
         } else {
           throw new Error('Email sau parola gresite!');
@@ -97,7 +98,7 @@ function App() {
       })
       .then((data) => {
         if (data.message) {
-          if (enteredEmail.split('@')[1] === 'stud.ase.ro' ) {
+          if (enteredEmail.split('@')[1] === 'stud.ase.ro') {
             setIsProfessor(false);
           } else setIsProfessor(true);
           localStorage.setItem('token', data.token);
@@ -112,7 +113,7 @@ function App() {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        }))
+      }))
   };
   const onLogout = () => {
     localStorage.removeItem('token');
@@ -126,12 +127,12 @@ function App() {
       pauseOnHover: true,
       draggable: true,
       progress: undefined,
-      });
+    });
   };
   return (
     <div className='main'> <ToastContainer />
-       {isLoggedIn ?<Navbar onLogout={onLogout} isLoggedIn={isLoggedIn} /> : ''}
-      {isLoggedIn === false ? <LoginForm onLogin={onLogin} onSignIn={onSignIn}/> : ''}{' '}
+      {isLoggedIn ? <Navbar onLogout={onLogout} isLoggedIn={isLoggedIn} /> : ''}
+      {isLoggedIn === false ? <Login onLogin={onLogin} onSignIn={onSignIn} /> : ''}{' '}
       {isLoggedIn && isProfessor ? <ProfessorPage /> : ''}
       {isLoggedIn && !isProfessor ? <StudentPage /> : ''}
     </div>

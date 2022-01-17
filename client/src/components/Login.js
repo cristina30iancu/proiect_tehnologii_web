@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 
-function LoginForm(props) {
+function Login(props) {
   const emailRef = useRef();
   const emailRefSign = useRef();
   const passwordRefSign = useRef();
@@ -9,20 +9,27 @@ function LoginForm(props) {
   const lnameRef = useRef();
 
   const LoginHandler = (e) => {
-    e.preventDefault();
-    console.log(emailRef.current.value, passwordRef.current.value)
-    props.onLogin(emailRef.current.value, passwordRef.current.value);
+    if (e) {
+      e.preventDefault();
+      console.log(emailRef.current.value, passwordRef.current.value)
+      props.onLogin(emailRef.current.value, passwordRef.current.value);
+    }
+
   };
   const SignHandler = (e) => {
-    e.preventDefault();
-    console.log(emailRefSign.current.value, passwordRefSign.current.value)
-    props.onSignIn(emailRefSign.current.value, 
-      passwordRefSign.current.value,
-      fnameRef.current.value,
-      lnameRef.current.value);
+    if (e) {
+      e.preventDefault();
+      console.log(emailRefSign.current.value, passwordRefSign.current.value)
+      props.onSignIn(emailRefSign.current.value,
+        passwordRefSign.current.value,
+        fnameRef.current.value,
+        lnameRef.current.value);
+      changeLogIn(e);
+    }
   };
 
   const changeLogIn = (e) => {
+    if (!e) return;
     e.preventDefault();
     document.querySelector('.cont_forms').className =
       'cont_forms cont_forms_active_login';
@@ -38,7 +45,8 @@ function LoginForm(props) {
     }, 200);
   };
 
-  const changeSignUp = (e)=> {
+  const changeSignUp = (e) => {
+    if (!e) return;
     e.preventDefault();
     document.querySelector('.cont_forms').className =
       'cont_forms cont_forms_active_sign_up';
@@ -116,7 +124,7 @@ function LoginForm(props) {
               <input type="text" ref={emailRefSign} placeholder="Email" />
               <input type="text" ref={lnameRef} placeholder="Nume" />
               <input type="text" ref={fnameRef} placeholder="Prenume" />
-              <input type="password" ref={passwordRefSign}  placeholder="Parola" />
+              <input type="password" ref={passwordRefSign} placeholder="Parola" />
               <button class="btn_sign_up" onClick={SignHandler}>
                 SIGN UP
               </button>
@@ -127,4 +135,4 @@ function LoginForm(props) {
     </div>
   );
 }
-export default LoginForm;
+export default Login;
