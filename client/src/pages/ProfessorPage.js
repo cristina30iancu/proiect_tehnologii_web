@@ -306,8 +306,8 @@ function ProfessorPage() {
       <h1>Vizualizare feedback</h1>
       <hr />
       <br />
-      <label id="label" htmlFor="idactivitate">COD Activitate:</label>
-      <input type="text" ref={codPtFeedback} placeholder='cod' id="idactivitate" name="idactivitate"></input>
+      <label id="label" htmlFor="idactivitate">COD Activitate:</label><br />
+      <input type="text" ref={codPtFeedback} placeholder='cod' id="idactivitate" name="idactivitate"></input><br />
       <button type="button" className="custombtn" onClick={() => getFeedbackOfActivity(null)} >Afisare</button>
       <br /><br />
       <h1>Istoric de feedback</h1>
