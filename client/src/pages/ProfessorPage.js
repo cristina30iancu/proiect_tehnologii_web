@@ -10,6 +10,7 @@ function ProfessorPage() {
   const [showFeedback, setShowFeedback] = useState(false);
   const [professor, setProfessor] = useState();
   const [activities, setActivities] = useState([]);
+  const [feedbacks, setFeedbacks] = useState([]);
   const [arrayTypes, setArrayTypes] = useState([]);
   const cod = useRef();
   const codPtFeedback = useRef();
@@ -32,8 +33,8 @@ function ProfessorPage() {
       });
   };
   const getAllExistentActivities = (prof) => {
-    let introdusa = moment(date.current.value, "YYYY-MM-DD");
-    let curenta = moment(currentDate, "DD:MM:YYYY");
+    let introdusa = moment(date.current.value, moment.ISO_8601, true);
+    let curenta = moment(currentDate, "DD:M:YYYY HH:mm:ss", true);
     let dif = introdusa - curenta;
     if (dif < 0) {
       toast.error("Data nu poate fi in trecut!", {
@@ -70,7 +71,7 @@ function ProfessorPage() {
       });
       return;
     }
-    fetch(`http://localhost:3001/activities/`, {
+    fetch(`http://localhost:3001/activities`, {
       method: 'GET',
       headers: {
         Authorization: localStorage.getItem('token'),
@@ -78,6 +79,7 @@ function ProfessorPage() {
       },
     }).then((res) => res.json())
       .then((data) => {
+        console.log(data)
         for (let a of data) {
           if (a.code == cod.current.value) {
             toast.error("Exista activitate cu acest cod!", {
@@ -92,16 +94,11 @@ function ProfessorPage() {
             return;
           }
         }
+        console.log('ok')
         makeRequest(prof)
-      }).catch((e) => toast.error("Nu s-au putut prelua activitatile!", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      }));
+      })
+      .catch((e) => { 
+        makeRequest(prof) });
   };
   const makeRequest = (prof) => {
     fetch(`http://localhost:3001/activities/${prof.id}`, {
@@ -189,6 +186,7 @@ function ProfessorPage() {
       },
     }).then((res) => res.json())
       .then((data) => {
+        setFeedbacks(data)
         let e = 0, g = 0, a = 0, p = 0;
         for (let f of data) {
           if (f.type == 'EXCELENT') {
@@ -249,7 +247,7 @@ function ProfessorPage() {
       <input type="descriere" placeholder="Introduceti descriere" ref={descriere} name="descriere" id="descriere" required></input><br />
 
       <label htmlFor="date"><b>Data activitate</b></label><br />
-      <input type="date" placeholder="Data activitate" ref={date} name="data" id="data" required></input><br />
+      <input type="datetime-local" placeholder="Data activitate" ref={date} name="data" id="data" required></input><br />
 
       <button type="submit" className="custombtn" onClick={() => {
         getAllExistentActivities(professor)
@@ -314,6 +312,7 @@ function ProfessorPage() {
       <table class='tablefeedback'>
         <thead>
           <tr>
+            <th>Data</th>
             <th>💓</th>
             <th>😀</th>
             <th>🙁</th>
@@ -321,13 +320,26 @@ function ProfessorPage() {
           </tr>
         </thead>
         <tbody>
+          {feedbacks.map((feedback, i) => (
+            <tr>
+              <td>{new Date(feedback.date).getHours()}:{new Date(feedback.date).getMinutes()}:{new Date(feedback.date).getSeconds()}</td>
+              <td>{feedback.type == 'EXCELENT' ? 'x' : '0'}</td>
+              <td>{feedback.type == 'GOOD' ? 'x' : '0'}</td>
+              <td>{feedback.type == 'AVERAGE' ? 'x' : '0'}</td>
+              <td>{feedback.type == 'POOR' ? 'x' : '0'}</td>
+            </tr>
+          ))}
+        </tbody>
+        <tfoot>
           <tr>
+            <td>Total</td>
             <td >{arrayTypes[0]}</td>
             <td>{arrayTypes[1]}</td>
             <td>{arrayTypes[2]}</td>
             <td>{arrayTypes[3]}</td>
           </tr>
-        </tbody>
+        </tfoot>
+
       </table>
     </div>
   );

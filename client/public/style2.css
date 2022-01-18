@@ -535,10 +535,14 @@ table, td {
   border:2px solid black !important;
   background-color: white !important;
 }
-th{
+th,tfoot{
   border: 2px solid black !important;
   font-weight: bold !important;
   width: 200px !important;
+  background-color: #BBE5B0;
+}
+tfoot{
+  color:red;
 }
  .professors-display {
   position: absolute;

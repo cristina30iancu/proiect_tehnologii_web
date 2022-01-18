@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Feedback from '../components/Feedback';
 import { toast } from 'react-toastify';
+import moment from 'moment';
 
 function StudentPage() {
   const [createFeedback, setCreateFeedback] = useState(false);
@@ -14,8 +15,7 @@ function StudentPage() {
   const descriere = useRef();
   const tip = useRef();
   const current = new Date();
-  const date = `${current.getDate()}:${current.getMonth() + 1}:${current.getFullYear()}`;
-
+  const date = `${current.getDate()}:${current.getMonth() + 1}:${current.getFullYear()} ${current.getHours()}:${current.getMinutes()}:${current.getSeconds()}`;
   const getActivities = (student) => {
     fetch(`http://localhost:3001/activities`, {
       method: 'GET',
@@ -31,6 +31,41 @@ function StudentPage() {
           if (a.code == cod.current.value) {
             setActivity(a)
             activity2 = a;
+            let introdusa = moment(activity2.date, moment.ISO_8601,true);
+            let curenta = moment(date, "DD:M:YYYY HH:mm:ss",true);
+            let dif = introdusa - curenta;
+           console.log(`data activitatii ${activity2.date}, curenta ${date} si dif ${dif}`)
+           console.log(`data activitatii ${introdusa}, curenta ${curenta} si dif ${dif}`)
+           if(dif<(-432000000)) {
+            toast.error("Activitate s-a terminat!", {
+              position: "top-right",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            })
+            console.log('a trecut')
+            setActivity(null)
+            return;
+           }
+           else if(dif>432000000) {
+            console.log('n-a inceput')
+            toast.error("Activitate nu a inceput!", {
+              position: "top-right",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            })
+            setActivity(null)
+            return;
+           }
+           console.log('ok')
+            /**data activitatii 2022-01-18T12:41:00.000Z, curenta 18:1:2022 15:29:28 si dif NaN */
             fetch(`http://localhost:3001/users/${student.id}/activities/${activity2.id}/enroll`, {
               method: 'POST',
               headers: {
@@ -148,7 +183,7 @@ function StudentPage() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        date: date,
+        date: new Date(current.getFullYear(),current.getMonth(),current.getDate(),current.getHours(),current.getMinutes(),current.getSeconds())        ,
         description: descriere.current.value,
         type: tip.current.value,
       }),
